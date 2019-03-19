@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 import CardList from "./CardList";
+import Scroll from './scroll.js';
 import SearchBox from "./SearchBox";
 import "./App.css";
 
@@ -41,7 +42,9 @@ class App extends Component {
       <div className="tc">
         <h1>Interactive User List</h1>
         <SearchBox searchChange={this.onSearchChange} />
-        <CardList data={filteredUsers} />
+        <Scroll>
+          <CardList data={filteredUsers} />
+        </Scroll>        
       </div>
     );
   }
