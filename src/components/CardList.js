@@ -1,5 +1,5 @@
 import React from "react";
-import Card from "./card.js";
+import Card from "./Card.js";
 import { map } from "lodash";
 
 const CardList = props => {
