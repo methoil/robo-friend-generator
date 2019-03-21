@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import "./App.css";
 import CardList from "../components/CardList";
-import Scroll from '../components/Scroll.js/index.js.js';
+import ErrorBoundry from "../components/ErrorBoundry";
+import Scroll from "../components/Scroll";
 import SearchBox from "../components/SearchBox";
-import "./App.css";
 
 class App extends Component {
   constructor() {
@@ -31,21 +31,21 @@ class App extends Component {
   render() {
     const { users, searchfield } = this.state;
     const filteredUsers = users.filter(user => {
-      return user.name
-        .toLowerCase()
-        .includes(searchfield.toLowerCase());
+      return user.name.toLowerCase().includes(searchfield.toLowerCase());
     });
-    
+
     if (!users.length) {
-      return <h1>Loading</h1>
-    };
+      return <h1>Loading</h1>;
+    }
     return (
       <div className="tc">
         <h1>Interactive User List</h1>
         <SearchBox searchChange={this.onSearchChange} />
         <Scroll>
-          <CardList data={filteredUsers} />
-        </Scroll>        
+          <ErrorBoundry>
+            <CardList data={filteredUsers} />
+          </ErrorBoundry>
+        </Scroll>
       </div>
     );
   }
