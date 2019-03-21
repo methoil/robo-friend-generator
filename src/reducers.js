@@ -1,14 +1,14 @@
-import {CHANGE_SEARCH_FIELD} from './constants.js'
+import { CHANGE_SEARCH_FIELD } from "./constants.js";
 
 const initialState = {
-    searchField: '',
-}
+  searchField: ""
+};
 
 export const searchUsers = (state = initialState, action = {}) => {
-    switch(action.type) {
-        case CHANGE_SEARCH_FIELD: 
-            return Object.assign({}, state, searchField: action.playload);
-        default:
-            return state;
-    }
-}
+  switch (action.type) {
+    case CHANGE_SEARCH_FIELD:
+      return Object.assign({}, state, { searchField: action.playload });
+    default:
+      return state;
+  }
+};
