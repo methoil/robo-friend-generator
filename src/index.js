@@ -1,12 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { Provider, connect } from "react-redux";
+import { Provider } from "react-redux";
 import { createStore } from "redux";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import App from "./containers/App";
 import { searchUsers } from "./reducers";
 import "tachyons";
+
+// import { setSearchfield } from './actions';
 
 const store = createStore(searchUsers);
 

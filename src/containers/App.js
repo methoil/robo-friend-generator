@@ -1,16 +1,29 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import "./App.css";
 import CardList from "../components/CardList";
 import ErrorBoundry from "../components/ErrorBoundry";
 import Scroll from "../components/Scroll";
 import SearchBox from "../components/SearchBox";
+import { setSearchField } from "../actions";
+
+const mapStateToProps = (state) => {
+  return {
+    searchField: state.searchField
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return { // map of actions
+    onSearchChange: (event) => dispatch(setSearchField(event.target.value))
+  }
+};
 
 class App extends Component {
   constructor() {
     super();
     this.state = {
       users: [],
-      searchfield: ""
     };
   }
 
@@ -24,14 +37,11 @@ class App extends Component {
       });
   }
 
-  onSearchChange = event => {
-    this.setState({ searchfield: event.target.value });
-  };
-
   render() {
-    const { users, searchfield } = this.state;
+    const { users } = this.state;
+    const { searchField, onSearchChange } = this.props;
     const filteredUsers = users.filter(user => {
-      return user.name.toLowerCase().includes(searchfield.toLowerCase());
+      return user.name.toLowerCase().includes(searchField && searchField.toLowerCase());
     });
 
     if (!users.length) {
@@ -40,7 +50,7 @@ class App extends Component {
     return (
       <div className="tc">
         <h1>Interactive User List</h1>
-        <SearchBox searchChange={this.onSearchChange} />
+        <SearchBox searchChange={onSearchChange} />
         <Scroll>
           <ErrorBoundry>
             <CardList data={filteredUsers} />
@@ -51,4 +61,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);
