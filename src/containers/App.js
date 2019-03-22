@@ -5,49 +5,35 @@ import CardList from "../components/CardList";
 import ErrorBoundry from "../components/ErrorBoundry";
 import Scroll from "../components/Scroll";
 import SearchBox from "../components/SearchBox";
-import { setSearchField } from "../actions";
+import { setSearchField, requestUsers } from "../actions";
 
 const mapStateToProps = (state) => {
   return {
-    searchField: state.searchField
+    searchField: state.searchUsers.searchField,
+    users: state.requestUsers.users,
+    isPending: state.requestUsers.isPending,
+    error: state.requestUsers.error,
   }
 };
 
 const mapDispatchToProps = (dispatch) => {
   return { // map of actions
-    onSearchChange: (event) => dispatch(setSearchField(event.target.value))
+    onSearchChange: (event) => dispatch(setSearchField(event.target.value)),
+    onRequestUsers: () => dispatch(requestUsers()),
   }
 };
 
-class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      users: [],
-    };
-  }
-
+class App extends Component {  
   componentDidMount() {
-    fetch("https://jsonplaceholder.typicode.com/users")
-      .then(res => {
-        return res.json();
-      })
-      .then(data => {
-        this.setState({ users: data });
-      });
+   this.props.onRequestUsers();
   }
 
   render() {
-    const { users } = this.state;
-    const { searchField, onSearchChange } = this.props;
+    const { searchField, onSearchChange, users, isPending } = this.props;
     const filteredUsers = users.filter(user => {
       return user.name.toLowerCase().includes(searchField && searchField.toLowerCase());
     });
-
-    if (!users.length) {
-      return <h1>Loading</h1>;
-    }
-    return (
+    return isPending ?  <h1>Loading</h1> :
       <div className="tc">
         <h1>Interactive User List</h1>
         <SearchBox searchChange={onSearchChange} />
@@ -57,7 +43,6 @@ class App extends Component {
           </ErrorBoundry>
         </Scroll>
       </div>
-    );
   }
 }
 
